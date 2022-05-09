@@ -1,0 +1,69 @@
+name: Application
+
+configs:
+  Debug: debug
+  Release: release
+
+configFiles:
+  Debug: xcconfig/Project-Debug.xcconfig
+  Release: xcconfig/Project-Release.xcconfig
+
+options:
+  indentWidth: 2
+  tabWidth: 2
+
+packages:
+  RxSwift:
+    url: https://github.com/ReactiveX/RxSwift
+    version: 6.5.0
+
+targets:
+  App:
+    type: application
+    platform: iOS
+
+    configFiles:
+      Debug: xcconfig/App-Debug.xcconfig
+      Release: xcconfig/App-Release.xcconfig
+
+    sources: [Targets/PRTest]
+
+    settings:
+      base:
+        INFOPLIST_FILE: Targets/PRTest/Resources/Info.plist
+
+    dependencies:
+      - package: RxSwift
+        product: RxSwift
+
+    preBuildScripts:
+      - path: scripts/swiftformat.sh
+        name: Swift Format
+      - path: scripts/swiftlint.sh
+        name: Swift Lint
+
+  UnitTest:
+    type: bundle.unit-test
+    platform: iOS
+
+    configFiles:
+      Debug: xcconfig/App-Debug.xcconfig
+      Release: xcconfig/App-Release.xcconfig
+
+    sources: [Targets/PRTestUnitTests]
+
+    info:
+      path: Targets/UnitTest/Resources/Info.plist
+
+    dependencies:
+      - target: App
+      - package: RxSwift
+        product: RxTest
+      - package: RxSwift
+        product: RxBlocking
+
+    preBuildScripts:
+      - path: scripts/swiftformat.sh
+        name: Swift Format
+      - path: scripts/swiftlint.sh
+        name: Swift Lint
