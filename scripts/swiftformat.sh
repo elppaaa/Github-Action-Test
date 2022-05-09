@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if ! command -v swiftformat &> /dev/null; then 
-  brew install swiftformat
+  echo "Skip Swiftformat"
 else
   swiftformat .
 fi

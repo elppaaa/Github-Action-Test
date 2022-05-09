@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if ! command -v swiftlint &>/dev/null; then 
-  brew install swiftlint
+  echo "Skip Swiftformat"
 else
   swiftlint --fix
 fi
